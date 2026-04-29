@@ -71,17 +71,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-// ── Home row mod aliases (GASC / CSAG) ────────────────────────────────────────
-
-#define HM_A LGUI_T(KC_A)
-#define HM_S LALT_T(KC_S)
-#define HM_D LSFT_T(KC_D)
-#define HM_F LCTL_T(KC_F)
-#define HM_J RCTL_T(KC_J)
-#define HM_K RSFT_T(KC_K)
-#define HM_L RALT_T(KC_L)
-#define HM_SC RGUI_T(KC_SCLN)
-
 #define LT2_TAB LT(2, KC_TAB)
 #define LT3_SPC LT(3, KC_SPC)
 
@@ -93,16 +82,6 @@ combo_t key_combos[] = {
     COMBO(combo_layer3, MO(3)),
 };
 
-// ── Chordal hold (mirror ZMK hold-trigger-key-positions) ──────────────────────
-
-const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
-    'L', 'L', 'L', 'L', 'L', 'L',                    'R', 'R', 'R', 'R', 'R', 'R',
-    'L', 'L', 'L', 'L', 'L', 'L',                    'R', 'R', 'R', 'R', 'R', 'R',
-    'L', 'L', 'L', 'L', 'L', 'L',                    'R', 'R', 'R', 'R', 'R', 'R',
-    'L', 'L', 'L', 'L', 'L', 'L', 'L',      'R',     'R', 'R', 'R', 'R', 'R', 'R',
-                        'L', 'L', 'L', 'L', 'R', 'R', 'R', 'R'
-);
-
 // ── Keymaps ───────────────────────────────────────────────────────────────────
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -110,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT(
     KC_ESC,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
     KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
-    KC_LSFT,  HM_A,    HM_S,    HM_D,    HM_F,    KC_G,                       KC_H,    HM_J,    HM_K,    HM_L,    HM_SC,   KC_QUOT,
+    KC_LSFT,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LCTL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LBRC,  KC_ENT,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL,
                                 KC_LALT, KC_LGUI, MO(1),   LT2_TAB,  LT3_SPC, KC_SPC,  KC_BSPC, KC_DEL
   ),
@@ -181,6 +160,10 @@ static void render_status(void) {
 }
 
 bool oled_task_user(void) {
+    if (last_input_activity_elapsed() > OLED_TIMEOUT) {
+        oled_off();
+        return false;
+    }
     if (is_keyboard_master()) {
         render_status();
     } else {

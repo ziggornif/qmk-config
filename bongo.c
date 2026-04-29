@@ -423,7 +423,10 @@ bool detect_key_down(void)
             return true;
         }
     }
-    return false;
+
+    // pas de keypress local — fallback sur le WPM synchro (SPLIT_WPM_ENABLE) pour
+    // détecter la frappe sur l'autre half
+    return get_current_wpm() > 0;
 }
 
 void eval_anim_state(void)
@@ -496,7 +499,11 @@ void draw_bongo(bool minimal)
                 oled_write_raw_P(tap_minimal[abs((TAP_FRAMES - 1) - current_tap_frame)], ANIM_SIZE);
             else
                 oled_write_raw_P(tap[abs((TAP_FRAMES - 1) - current_tap_frame)], ANIM_SIZE);
-            current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
+            if (timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION)
+            {
+                current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
+                anim_timer = timer_read32();
+            }
             break;
 
         default:
