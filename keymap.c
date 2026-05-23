@@ -71,16 +71,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-#define LT2_TAB LT(2, KC_TAB)
+#define LT2_SPC LT(2, KC_SPC)
 #define LT3_SPC LT(3, KC_SPC)
+#define LT4_GUI LT(3, KC_RGUI)
 
 // ── Combos ────────────────────────────────────────────────────────────────────
 
-const uint16_t PROGMEM combo_layer3[] = {MO(1), LT2_TAB, COMBO_END};
+// const uint16_t PROGMEM combo_layer3[] = {MO(1), LT2_TAB, COMBO_END};
 
-combo_t key_combos[] = {
-    COMBO(combo_layer3, MO(3)),
-};
+// combo_t key_combos[] = {
+//     COMBO(combo_layer3, MO(3)),
+// };
 
 // ── Keymaps ───────────────────────────────────────────────────────────────────
 
@@ -91,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
     KC_LSFT,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LCTL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LBRC,  KC_ENT,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL,
-                                KC_LALT, KC_LGUI, MO(1),   LT2_TAB,  LT3_SPC, KC_SPC,  KC_BSPC, KC_DEL
+                                KC_LALT, KC_LGUI, MO(1),   LT2_SPC,  LT3_SPC, LT4_GUI,  KC_BSPC, KC_DEL
   ),
 
   [1] = LAYOUT(
